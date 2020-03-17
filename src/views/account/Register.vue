@@ -7,7 +7,7 @@
                     prop="userName"
                     :rules="{required: true, message: '用户名不能为空'}"
             >
-                <el-input v-model="user.userName" clearable/>
+                <el-input v-focus v-model="user.userName" clearable/>
             </el-form-item>
             <el-form-item
                     label="账号"
@@ -21,25 +21,23 @@
                     prop="userPwd"
                     :rules="{required: true, message: '密码不能为空'}"
             >
-                <div @keydown.enter="submit">
-                    <el-input v-model="user.userPwd" type="password" clearable show-password/>
-                </div>
+                <el-input v-model="user.userPwd" type="password" clearable show-password/>
             </el-form-item>
             <el-form-item
                     label="确认密码"
                     prop="userConfirmPassword"
                     :rules=" { validator: confirm, trigger: 'blur' }"
             >
-                <div @keydown.enter="submit">
-                    <el-input v-model="user.userConfirmPassword" type="password" clearable show-password/>
-                </div>
+                <el-input v-model="user.userConfirmPassword" type="password" clearable show-password/>
             </el-form-item>
             <el-form-item
                     label="邀请码"
                     prop="userClass"
                     :rules="{required: true, message: '邀请码不能为空'}"
             >
-                <el-input v-model="user.userClass" clearable/>
+                <div @keydown.enter="submit">
+                    <el-input v-model="user.userClass" clearable/>
+                </div>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" class="btn" @click="submit" :loading="user.flag">注册</el-button>

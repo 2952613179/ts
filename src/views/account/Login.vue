@@ -7,7 +7,10 @@
                     prop="userAccount"
                     :rules="{required: true, message: '用户名不能为空'}"
             >
-                <el-input v-model="user.userAccount" clearable/>
+                <div >
+
+                    <el-input v-focus  v-model="user.userAccount" clearable/>
+                </div>
             </el-form-item>
             <el-form-item
                     label="密码"
@@ -15,7 +18,7 @@
                     :rules="{required: true, message: '密码不能为空'}"
             >
                 <div @keydown.enter="submit">
-                    <el-input v-model="user.userPwd" type="password" clearable show-password/>
+                    <el-input  v-model="user.userPwd" type="password" clearable show-password/>
                 </div>
             </el-form-item>
             <el-form-item>
@@ -64,8 +67,6 @@
                     }
                     this.user.flag = false;
                 })
-
-
             }
         }
     }
