@@ -7,7 +7,7 @@ const Register = () => import("../views/account/Register");
 
 const StudentHome = () => import("../views/student/Home");
 const StudentSign = () => import("../views/student/Sign");
-const StudentSignMessage = () => import("../views/student/SginMessage");
+const StudentSignMessage = () => import("../views/student/SignMessage");
 const StudentJob = () => import("../views/student/Job");
 const StudentJobMessage =  () => import("../views/student/JobMessage");
 const StudentUser =  () => import("../views/student/User");
@@ -17,7 +17,7 @@ Vue.use(VueRouter);
 
 const routes = [
     {
-        path: "",
+        path: "*",
         redirect: "/login"
     },
     {

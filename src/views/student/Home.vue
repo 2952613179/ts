@@ -3,13 +3,13 @@
         <mt-header fixed :title="tabbar"></mt-header>
         <mt-tabbar fixed v-model="tabbar">
             <mt-tab-item :id="itme.label" v-for="itme in tabList">
-                <router-link :to="itme.a">
-                    <i :class="itme.icon"></i>
-                    <p>{{ itme.label }}</p>
-                </router-link>
+                <i :class="itme.icon"></i>
+                <p>{{ itme.label }}</p>
             </mt-tab-item>
         </mt-tabbar>
-        <div><router-view/></div>
+        <div style="margin-top: 40px;padding-bottom: 62px">
+            <router-view/>
+        </div>
     </div>
 </template>
 
@@ -30,15 +30,24 @@
             }
         },
         watch: {
+            tabbar(to) {
+                if (to === window.sessionStorage.getItem("tab")) return;
+                window.sessionStorage.setItem("tab", to);
+                this.$router.push(this.tabList.filter(tab => tab.label == to)[0].a);
+            }
+        },
+        created() {
+            let val = window.sessionStorage.getItem("tab");
+            if (val) {
+                this.tabbar = val;
+                const action = this.tabList.filter(tab => tab.label == val)[0];
+                if (this.$route.path !== action.a) {
+                    this.$router.push(action.a);
+                }
+            }
         }
     }
 </script>
 
 <style scoped>
-    a {
-        color: #2d2d2d;
-    }
-    .router-link-active {
-        color: #26a2ff;
-    }
 </style>

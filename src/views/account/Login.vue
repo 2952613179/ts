@@ -52,18 +52,22 @@
                 this.$refs.form.validate(async validate => {
                     if (!validate || this.user.flag) return;
                     this.user.flag = true;
-                    const result = await this.$request({
-                        url: "/login",
-                        method: "POST",
-                        data: this.user,
-                    });
-                    if (result.num === 200) {
-                        this.$message.success("登录成功");
-                        this.$router.push("/student/home/sign");
-                    } else {
-                        this.user.userAccount = "";
-                        this.user.userPwd = "";
-                        this.$message.error("账号或者密码错误");
+                    try {
+                        const result = await this.$request({
+                            url: "/login",
+                            method: "POST",
+                            data: this.user,
+                        });
+                        if (result.num === 200) {
+                            this.$message.success("登录成功");
+                            this.$router.push("/student/home/sign");
+                        } else {
+                            this.user.userAccount = "";
+                            this.user.userPwd = "";
+                            this.$message.error("账号或者密码错误");
+                        }
+                    } catch (e) {
+
                     }
                     this.user.flag = false;
                 })
