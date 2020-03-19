@@ -96,7 +96,6 @@
 </script>
 
 <style scoped>
-
     .el-pagination {
         margin-top: 10px;
     }
