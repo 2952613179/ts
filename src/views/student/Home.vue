@@ -2,9 +2,9 @@
     <div>
         <mt-header fixed :title="tabbar"></mt-header>
         <mt-tabbar fixed v-model="tabbar">
-            <mt-tab-item :id="itme.label" v-for="itme in tabList">
-                <i :class="itme.icon"></i>
-                <p>{{ itme.label }}</p>
+            <mt-tab-item :id="item.label" v-for="(item, index) in tabList" :key="index">
+                <i :class="item.icon"></i>
+                <p>{{ item.label }}</p>
             </mt-tab-item>
         </mt-tabbar>
         <div style="margin-top: 40px;padding-bottom: 62px">
