@@ -41,8 +41,8 @@
         data() {
             return {
                 user: {
-                    userAccount: "",
-                    userPwd: "",
+                    userAccount: "admin",
+                    userPwd: "123456",
                     flag: false
                 }
             }

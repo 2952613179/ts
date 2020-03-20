@@ -44,7 +44,7 @@
                     url: "/signList",
                     params: {page: this.page, limit: this.limit}
                 });
-                this.signList = result.tableData;
+                this.signList = result;
             }
         }
     }

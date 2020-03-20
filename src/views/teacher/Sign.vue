@@ -12,6 +12,8 @@
                 </el-date-picker>
                 <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
+
+            <el-button style="margin-left: 10px;" size="medium" type="success">添加签到日</el-button>
         </div>
         <el-table
                 :data="signData"

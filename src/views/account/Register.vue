@@ -71,6 +71,14 @@
                         url: "/register",
                         data: this.user
                     })
+
+
+                    if (result.num === 200) {
+                        this.$message.success("注册成功");
+                        this.$router.push("/login");
+                    } else {
+                        this.$message.error(result.str);
+                    }
                 })
             },
             confirm(rule, value, callback) {

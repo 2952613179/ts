@@ -65,7 +65,7 @@
             return {
                 isNavOpen: false,
                 navList: [
-                    {label: "学生管理", path: "/teacher/home/user", icon: "el-icon-user"},
+                    {label: "用户管理", path: "/teacher/home/user", icon: "el-icon-user"},
                     {label: "班级管理", path: "/teacher/home/class", icon: "el-icon-folder-opened"},
                     {label: "学生签到情况", path: "/teacher/home/sign", icon: "el-icon-edit-outline"},
                     {label: "学生作业情况", path: "/teacher/home/job", icon: "el-icon-document"},
