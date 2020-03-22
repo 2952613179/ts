@@ -20,8 +20,7 @@
 
             <el-table-column
                     type="index"
-                    label="*"
-                    width="80">
+                    label="*">
             </el-table-column>
             <el-table-column
                     prop="userName"
@@ -66,7 +65,7 @@
                 <el-form-item
                         prop="userName"
                         :rules="{required: true, message: '姓名不能为空'}"
-                        label="用户真实姓名">
+                        label="用户姓名">
                     <el-input v-model="editUser.userName"
                               :disabled="editUser.userId == '' ? false : true"
                               autocomplete="off"></el-input>
@@ -83,11 +82,11 @@
                         prop="userPwd"
                         :rules="{required: true, message: '用户密码不能为空'}"
                         label="用户密码">
-                    <el-input v-model="editUser.userPwd" autocomplete="off"></el-input>
+                    <el-input v-model="editUser.userPwd" type="password" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item
                         prop="userType"
-                        :rules="{required: true, message: '用户类型为空'}"
+                        :rules="{required: true, message: '用户类型不能为空'}"
                         label="用户类型">
                     <el-select v-model="editUser.userType"
                                :disabled="editUser.userId == '' ? false : true"
@@ -105,7 +104,7 @@
                                filterable
                                :disabled="editUser.userId == '' ? false : true"
                                placeholder="请选择所属班级">
-                        <el-option v-for="(item, index) in editUser.classList"
+                        <el-option v-for="(item, index) in classList"
                                    :key="index"
                                    :label="item.className"
                                    :value="item.classId"></el-option>
@@ -140,9 +139,9 @@
                     userAccount: "",
                     userPwd: "",
                     userType: "",
-                    userClass: "",
-                    classList: []
-                }
+                    userClass: ""
+                },
+                classList: []
             }
         },
         components: {
@@ -154,13 +153,14 @@
                 this.showUserList();
             },
             handleCurrentChange(val) {
-                this.page.limit = val;
+                console.log(val);
+                this.paging.page = val;
                 this.showUserList();
             },
             async showUserList() {
                 const result = await this.$request({
                     method: "GET",
-                    url: '/userLike',
+                    url: 'user/userLike',
                     params: {
                         userType: this.userType,
                         userName: this.userName,
@@ -172,19 +172,37 @@
                 this.userData = result.tableData;
                 this.paging.count = result.count;
             },
-            editUserMethod(val) {
-
+            async editUserMethod(val) {
+                const result = await this.$request({
+                    url: "user/selectUser",
+                    params: {userId: val},
+                    method: "GET"
+                })
+                console.log(result);
+                this.editUser.isOpen = true;
+                this.editUser.userId = result.userId;
+                this.editUser.userName = result.userName;
+                this.editUser.userAccount = result.userAccount;
+                this.editUser.userPwd = result.userPwd;
+                this.editUser.userType = result.userType.toString();
+                this.editUser.userClass = result.userClass.toString();
             },
             deleteUserMethod(val) {
                 this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                }).then(async () => {
+                    const result = await this.$request({
+                        url: `user/deleteUser/${val}`,
+                        method: "DELETE"
+                    })
+                    if (result.num === 200) {
+                        this.$message.success(result.str);
+                        this.showUserList()
+                    } else {
+                        this.$message.error(result.str);
+                    }
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -193,18 +211,30 @@
                 });
             },
             saveUser() {
-                this.$refs.form.validate(validate => {
+                this.$refs.form.validate(async validate => {
                     if (!validate) return;
-
-                    this.editUser.isOpen = false;
+                    const result = await this.$request({
+                        url: "user/addUser",
+                        method: "POST",
+                        data: this.editUser
+                    });
+                    console.log(result);
+                    if (result.num === 200) {
+                        this.$message.success(result.str);
+                        this.showUserList();
+                        this.editUser.isOpen = false;
+                    } else {
+                        this.$message.error(result.str);
+                    }
                 })
             },
             async showClassList() {
                 const result = await this.$request({
-                    url: "/likeClass",
+                    url: "class/classList",
                     methods: "GET"
                 });
-                this.editUser.classList = result.tableData;
+                console.log(result);
+                this.classList = result;
             }
         },
         mounted() {
@@ -218,6 +248,7 @@
                     this.editUser.userType = '';
                     this.editUser.userPwd = '';
                     this.editUser.userName = '';
+                    this.editUser.userClass = '';
                 } else {
                     this.showClassList()
                 }

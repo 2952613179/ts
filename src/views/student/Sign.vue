@@ -56,7 +56,7 @@
                         });
                     } else {
                         const result = await this.$request({
-                            url: "/sign",
+                            url: "sign/sign",
                             method: "POST",
                             data: {code}
                         })

@@ -41,7 +41,7 @@
             async showList() {
                 const result = await this.$request({
                     method: "GET",
-                    url: "/signList",
+                    url: "sign/signList",
                     params: {page: this.page, limit: this.limit}
                 });
                 this.signList = result;

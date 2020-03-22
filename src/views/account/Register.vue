@@ -68,7 +68,7 @@
                     if (!validate) return;
                     const result = await this.$request({
                         method: "POST",
-                        url: "/register",
+                        url: "user/register",
                         data: this.user
                     })
 

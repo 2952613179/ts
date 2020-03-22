@@ -12,6 +12,11 @@
                 border
                 style="width: 100%">
             <el-table-column
+                    label="*"
+                    type="index"
+            >
+            </el-table-column>
+            <el-table-column
                     prop="className"
                     label="班级名称"
                     width="180">
@@ -26,6 +31,10 @@
                     label="负责人">
             </el-table-column>
 
+            <el-table-column
+                    prop="classCount"
+                    label="班级总人数">
+            </el-table-column>
             <el-table-column
                     label="操作">
                 <template slot-scope="scope">
@@ -48,14 +57,16 @@
         </el-pagination>
 
 
-        <el-dialog title="收货地址" :visible.sync="editClass.isOpen">
+        <el-dialog :title="editClass.classId == '' ? '添加班级' : '修改班级'" :visible.sync="editClass.isOpen">
             <el-form :model="editClass" ref="form" label-width="100px">
                 <el-form-item
                         label="班级名称"
                         prop="className"
                         :rules="{required: true, message: '班级名称不能为空'}"
                 >
-                    <el-input v-model="editClass.className" autocomplete="off"></el-input>
+                    <el-input v-model="editClass.className"
+                              :disabled="editClass.classId == '' ? false : true"
+                              autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item
                         label="班主任"
@@ -66,10 +77,12 @@
                 </el-form-item>
                 <el-form-item
                         label="班级邀请码"
-                        prop="code"
+                        prop="classCode"
                         :rules="{required: true, message: '邀请码不能为空'}"
                 >
-                    <el-input v-model="editClass.code" autocomplete="off"></el-input>
+                    <el-input v-model="editClass.classCode"
+                              :disabled="editClass.classId == '' ? false : true"
+                              autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item
                         label="班级总人数"
@@ -103,7 +116,7 @@
                     className: '',
                     classCount: '',
                     classer: '',
-                    code: ''
+                    classCode: ''
                 }
             }
         },
@@ -120,24 +133,65 @@
                 this.showClassList();
             },
             async showClassList() {
-                /*const result = await this.$request({
-                    url: "/likeClass",
+                const result = await this.$request({
+                    url: "class/likeClass",
                     methods: "GET",
                     params: {className: this.className, page: this.paging.page, limit: this.paging.limit}
                 });
                 this.classData = result.tableData;
-                this.paging.count = result.count;*/
+                this.paging.count = result.count;
             },
-            editClassMethod() {
-
+            async editClassMethod(val) {
+                const result = await this.$request({
+                    method: "GET",
+                    params: {classId: val},
+                    url: "class/selectClass"
+                })
+                this.editClass.isOpen = true;
+                this.editClass.classCode = result.classCode;
+                this.editClass.classer = result.classer;
+                this.editClass.classCount = result.classCount;
+                this.editClass.classId = result.classId;
+                this.editClass.className = result.className;
             },
-            deleteClassMethod() {
-
+            deleteClassMethod(val) {
+                this.$confirm('此操作将永久删除该班级, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(async () => {
+                    const result = await this.$request({
+                        method: "DELETE",
+                        url: `class/deleteClass/${val}`
+                    })
+                    if (result.num === 200) {
+                        this.$message.success(result.str);
+                        this.showClassList();
+                    } else {
+                        this.$message.error(result.str);
+                    }
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             saveClass() {
-                this.$refs.form.validate(validate => {
+                this.$refs.form.validate(async validate => {
                     if (!validate) return;
-                    this.editClass.isOpen = false;
+                    const result = await this.$request({
+                        url: "class/addClass",
+                        method: "POST",
+                        data: this.editClass
+                    })
+                    if (result.num === 200) {
+                        this.$message.success(result.str);
+                        this.showClassList();
+                        this.editClass.isOpen = false;
+                    } else {
+                        this.$message.error(result.str);
+                    }
                 })
 
             }
@@ -152,7 +206,7 @@
                     this.editClass.className = '';
                     this.editClass.classCount = '';
                     this.editClass.classer = '';
-                    this.editClass.code = '';
+                    this.editClass.classCode = '';
                 }
             }
         }

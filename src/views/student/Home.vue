@@ -25,7 +25,7 @@
                     {label: "签到记录", a: "/student/home/signMessage", icon: "el-icon-document"},
                     {label: "作业提交", a: "/student/home/job", icon: "el-icon-upload"},
                     {label: "作业记录", a: "/student/home/jobMessage", icon: "el-icon-document"},
-                    {label: "个人信息", a: "/student/home/user", icon: "el-icon-user-solid"}
+                    {label: "作业列表", a: "/student/home/jobList", icon: "el-icon-document"}
                 ]
             }
         },

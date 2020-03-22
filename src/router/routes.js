@@ -7,7 +7,7 @@ const StudentSign = () => import("../views/student/Sign");
 const StudentSignMessage = () => import("../views/student/SignMessage");
 const StudentJob = () => import("../views/student/Job");
 const StudentJobMessage =  () => import("../views/student/JobMessage");
-const StudentUser =  () => import("../views/student/User");
+const StudentUser =  () => import("../views/student/JobList");
 
 
 const TeacherHome = () => import("../views/teacher/Home");
@@ -63,7 +63,7 @@ const routes = [
                 component: StudentJobMessage
             },
             {
-                path: "user",
+                path: "jobList",
                 component: StudentUser
             }
         ]

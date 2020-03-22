@@ -41,8 +41,8 @@
         data() {
             return {
                 user: {
-                    userAccount: "admin",
-                    userPwd: "123456",
+                    userAccount: "",
+                    userPwd: "",
                     flag: false
                 }
             }
@@ -54,13 +54,20 @@
                     this.user.flag = true;
                     try {
                         const result = await this.$request({
-                            url: "/login",
+                            url: "user/login",
                             method: "POST",
                             data: this.user,
                         });
                         if (result.num === 200) {
                             this.$message.success("登录成功");
-                            this.$router.push("/student/home/sign");
+                            console.log(result);
+                            let obj = result.object;
+                            this.$store.commit("createUser", obj);
+                            if (obj.userType === 0) {
+                                this.$router.push("/student/home/sign");
+                            } else {
+                                this.$router.push("/teacher/home/user");
+                            }
                         } else {
                             this.user.userAccount = "";
                             this.user.userPwd = "";
