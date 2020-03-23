@@ -164,6 +164,13 @@
                         {{ scope.row.flag ? "已提交" : "未提交"}}
                     </template>
                 </el-table-column>
+                <el-table-column property="address" label="提交时间">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.flag">
+                            {{  scope.row.subTime | format }}
+                        </span>
+                    </template>
+                </el-table-column>
                 <el-table-column property="address" label="评分" width="200">
                     <template slot-scope="scope">
                         <el-radio-group v-if="scope.row.flag" @change="updateRemark(scope.row)" v-model="scope.row.remark">
@@ -338,20 +345,21 @@
                 this.jobList = result.tableData;
             },
             async showJobImg(val) {
-                this.jobImg.list = eval(this.jobList.filter(temp => temp.workId == val)[0].workAtta);
-                for (let i = 0; i < this.jobImg.list.length; i++) {
-                    let url = "workImg/" + this.jobImg.list[i];
+                this.jobImg.list.length = 0;
+                let list = eval(this.jobList.filter(temp => temp.workId == val)[0].workAtta);
+                for (let i = 0; i < list.length; i++) {
+                    let url = "workImg/" + list[i];
                     const resultImg = await this.$request({
                         url: url,
                         responseType: "blob"
                     });
-                    this.jobImg.list[i] = URL.createObjectURL(resultImg);
+                    this.jobImg.list.push(URL.createObjectURL(resultImg));
                 }
 
                 this.jobImg.isOpen = true;
             },
             async showJobSubImg(val) {
-                this.jobImg.list.length = 0;
+                this.jobImg.list = [];
                 let list = eval(this.jobMsgTable.list.filter(temp => temp.subId === val)[0].workAtta);
 
                 for (let i = 0; i < list.length; i++) {
@@ -382,6 +390,7 @@
                         user.subId = ws.subId;
                         user.remark = ws.remark;
                         user.subExp = ws.subExp;
+                        user.subTime = ws.subTime;
                     } else {
                         user.flag = false
                     }

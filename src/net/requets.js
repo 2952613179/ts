@@ -4,10 +4,13 @@ import 'nprogress/nprogress.css'
 import element from "element-ui"
 export const request = function (config) {
     NProgress.start();
+    const host = window.location.host;
+    console.log(host);
     const itf = Axios.create({
         // 解决跨域无session
         withCredentials: true,
-        baseURL: "/api",
+        baseURL: "http://" + host,
+        // baseURL: "/api",
         timeout: 10 * 1000,
         traditional: false
     });

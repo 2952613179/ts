@@ -49,7 +49,7 @@
             <el-table-column
                     label="更多">
                 <template slot-scope="scope">
-                    <hint-btn title="查看签到详情" icon="el-icon-s-order" @click="showSignMsg(scope.row.dateId)"></hint-btn>
+                    <hint-btn title="查看签到详情" icon="el-icon-s-order" @click="showSignMsg(scope.row.dateId, scope.row.dateName)"></hint-btn>
                 </template>
             </el-table-column>
         </el-table>
@@ -111,13 +111,18 @@
         </el-dialog>
 
 
-        <el-dialog title="签到详情" :visible.sync="signMsg.isOpen">
+        <el-dialog :title="'签到详情(' + signMsg.title + ')'" :visible.sync="signMsg.isOpen">
             <el-table :data="signMsg.list"
                       :row-class-name="tableRowClassName">
                 <el-table-column property="userName" label="姓名" width="200"></el-table-column>
                 <el-table-column property="address" label="是否签到">
                     <template slot-scope="scope">
                         {{ scope.row.flag ? "已签到" : "未签到"}}
+                    </template>
+                </el-table-column>
+                <el-table-column property="address" label="签到时间">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.flag">{{ scope.row.optime | format }}</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -193,8 +198,6 @@
         methods: {
 
             tableRowClassName({row, rowIndex}) {
-                console.log(row);
-                console.log(row.flag ? '' : 'warning-row');
                 return row.flag ? '' : 'warning-row';
             },
             saveSign() {
@@ -247,8 +250,9 @@
                 });
                 this.classList = result;
             },
-            async showSignMsg(val) {
+            async showSignMsg(val, dateName) {
                 this.signMsg.list.length = 0;
+                this.signMsg.title = dateName;
                 const result = await this.$request({
                     url: "sign/signListAndUserList",
                     method: "GET",
@@ -257,8 +261,11 @@
                 const {userList, signList} = result;
                 for (let i = 0; i < userList.length; i++) {
                     let user = userList[i];
-                    if (signList.filter(temp => temp.userId == user.userId).length !== 0) {
+                    let list = signList.filter(temp => temp.userId == user.userId);
+                    if (list.length !== 0) {
+                        let ls = list[0];
                         user.flag = true;
+                        user.optime = ls.optime;
                     } else {
                         user.flag = false;
                     }

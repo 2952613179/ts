@@ -37,7 +37,7 @@
                 jobList: [
                     {
                         flex: 1,
-                        values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+                        values: [],
                         className: 'slot1',
                         textAlign: 'center'
                     }

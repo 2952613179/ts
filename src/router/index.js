@@ -8,13 +8,15 @@ import routes from "./routes";
 
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     base: process.env.BASE_URL,
     routes
 })
 let timeOut = null;
 router.beforeEach(((to, from, next) => {
-    document.title = to.matched[0].meta.title;
+    if (to.matched[0]) {
+        document.title = to.matched[0].meta.title;
+    }
 
     let session = sessionStorage.getItem("obj");
 

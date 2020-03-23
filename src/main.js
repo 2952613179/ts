@@ -6,6 +6,8 @@ import element from "element-ui"
 import Mint from 'mint-ui/lib/index'
 import {request} from "./net/requets"
 
+import "core-js/modules/es.promise"
+import "core-js/modules/es.array.iterator";
 
 
 require("./utils/tools");
