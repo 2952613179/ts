@@ -15,6 +15,7 @@ const TeacherJob = () => import("../views/teacher/Job");
 const TeacherUser= () => import("../views/teacher/User");
 const TeacherSign = () => import("../views/teacher/Sign");
 const TeacherClass = () => import("../views/teacher/Class");
+const TeacherHistory = () => import("../views/teacher/History");
 
 const routes = [
     {
@@ -95,6 +96,10 @@ const routes = [
                 path: 'sign',
                 component: TeacherSign
             },
+            {
+                path: 'history',
+                component: TeacherHistory
+            }
         ]
     }
 ];

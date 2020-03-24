@@ -8,7 +8,9 @@
             </mt-tab-item>
         </mt-tabbar>
         <div style="margin-top: 40px;padding-bottom: 62px">
-            <router-view/>
+            <keep-alive>
+                <router-view/>
+            </keep-alive>
         </div>
     </div>
 </template>

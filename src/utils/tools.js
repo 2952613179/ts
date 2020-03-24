@@ -28,10 +28,9 @@ Vue.filter("format", val => {
 
 })
 
-Vue.prototype.$dateFormat = function(val) {
+Vue.prototype.$dateFormat = function(val, fmt = "yyyy-MM-dd") {
     if (val === '' || val === null) return '';
     let date = new Date(val);
-    let fmt = "yyyy-MM-dd"
     var o = {
         "M+": date.getMonth() + 1, //月份
         "d+": date.getDate(), //日

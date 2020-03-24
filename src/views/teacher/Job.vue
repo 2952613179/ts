@@ -242,9 +242,9 @@
                 this.createJob.issuer = result.workOper;
                 this.createJob.userClass = result.userClass;
                 let start = new Date(result.workStart);
-                start.setTime(start.getTime() - 1000*60*60*8)
+                start.setTime(start.getTime())
                 let end = new Date( result.workEnd);
-                end.setTime(end.getTime() - 1000*60*60*8)
+                end.setTime(end.getTime())
                 this.createJob.date = (start + "," + end).split(",")
                 this.createJob.fileList.length = 0;
                 let list = eval(result.workAtta);

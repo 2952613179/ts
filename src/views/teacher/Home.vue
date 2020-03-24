@@ -50,7 +50,9 @@
                             <span>{{ navAction }}</span>
                             <el-button style="float: right; padding: 3px 0" @click="retreat" type="text">后退</el-button>
                         </div>
-                        <router-view/>
+                        <keep-alive>
+                            <router-view/>
+                        </keep-alive>
                     </el-card>
                 </el-main>
             </el-container>
@@ -69,6 +71,7 @@
                     {label: "班级管理", path: "/teacher/home/class", icon: "el-icon-folder-opened"},
                     {label: "学生签到情况", path: "/teacher/home/sign", icon: "el-icon-edit-outline"},
                     {label: "学生作业情况", path: "/teacher/home/job", icon: "el-icon-document"},
+                    {label: "情况统计", path: "/teacher/home/history", icon: "el-icon-more-outline"},
                 ],
                 navAction: "学生管理",
                 navActionPath: "/teacher/home/user"
